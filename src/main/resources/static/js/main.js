@@ -55,17 +55,6 @@ $(document).ready(function () {
             $('#deleteModal').modal('show');
         }
 
-        //delete button
-        if (dBtn) {
-            dBtn.addEventListener('click', () => {
-                fetch(`${url}/${id}`, {
-                    method: 'DELETE'
-                })
-                .then($('#deleteModal').modal('hide'));
-                document.getElementById(id).remove();
-            });
-        }
-
         // edit modal
         if (editButtonIsPressed) {
             fetch(`${url}/${id}`, {
@@ -83,31 +72,60 @@ $(document).ready(function () {
             })
             $('#exampleModal').modal('show');
         }
+    })
 
-        //edit button
-        if (eBtn) {
-            eBtn.addEventListener('click', () => {
-                fetch(url, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        id: document.getElementById('formId').value,
-                        firstName: document.getElementById('formFirstName').value,
-                        lastName: document.getElementById('formLastName').value,
-                        age: document.getElementById('formAge').value,
-                        username: document.getElementById('formEmail').value,
-                        password: document.getElementById('formPassword').value,
-                        roles: getRoles('#formRoles')
-                    })
-                })
-                .then($('#exampleModal').modal('hide'))
-                .then(response => response.json())
-                .then(data => replaceRow(data)
-                )
+    //edit button
+    eBtn.addEventListener('click', () => {
+        fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: document.getElementById('formId').value,
+                firstName: document.getElementById('formFirstName').value,
+                lastName: document.getElementById('formLastName').value,
+                age: document.getElementById('formAge').value,
+                username: document.getElementById('formEmail').value,
+                password: document.getElementById('formPassword').value,
+                roles: getRoles('#formRoles')
             })
-        }
+        })
+        .then($('#exampleModal').modal('hide'))
+        .then(response => response.json())
+        .then(data => replaceRow(data)
+        )
+    });
+
+    //delete button
+    dBtn.addEventListener('click', e => {
+        let target = $('#deleteId').val()
+        fetch(`${url}/${target}`, {
+            method: 'DELETE'
+        })
+        .then($('#deleteModal').modal('hide'));
+        document.getElementById(target).remove();
+    });
+
+    //add button
+    aBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                lastName: document.getElementById('NewlastName').value,
+                firstName: document.getElementById('NewfirstName').value,
+                age: document.getElementById('Newage').value,
+                username: document.getElementById('Newusername').value,
+                password: document.getElementById('Newpassword').value,
+                roles: getRoles('#newUserRoles')
+            })
+        }).then(res => res.json())
+        .then(data => addRowsFromData(data))
+        $('#home-tab').tab('show')
     })
 
     function replaceRow(data) {
@@ -135,27 +153,6 @@ $(document).ready(function () {
         return data;
     }
 
-    //new user
-    aBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify({
-                lastName: document.getElementById('NewlastName').value,
-                firstName: document.getElementById('NewfirstName').value,
-                age: document.getElementById('Newage').value,
-                username: document.getElementById('Newusername').value,
-                password: document.getElementById('Newpassword').value,
-                roles: getRoles('#newUserRoles')
-            })
-        }).then(res => res.json())
-        .then(data => addRowsFromData(data))
-        $('#home-tab').tab('show')
-    })
-
     function addRowsFromData(data) {
         $.each(data, function () {
             row = '<tr id="' + data.id + '"><td>' + data.id + '</td><td>' + data.firstName + '</td>' + '<td>' + data.lastName + '</td>' +
@@ -174,6 +171,3 @@ $(document).ready(function () {
     });
 })
 ;
-
-
-

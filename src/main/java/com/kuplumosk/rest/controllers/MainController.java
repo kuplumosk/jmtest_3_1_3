@@ -30,6 +30,11 @@ public class MainController {
         return "user";
     }
 
+    @GetMapping("/test")
+    public String test() {
+        return "test";
+    }
+
     @GetMapping("/admin")
     public String showUserList(@ModelAttribute("user") User user, Model model, Principal principal) {
         model.addAttribute("allUsers", userServiceImpl.findAllUsers());

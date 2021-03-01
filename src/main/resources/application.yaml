@@ -6,7 +6,7 @@ spring:
   jpa:
     hibernate.ddl-auto: update
     generate-ddl: true
-    show-sql: false
+    show-sql: true
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver

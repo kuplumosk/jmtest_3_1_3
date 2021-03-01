@@ -5,6 +5,8 @@ import com.kuplumosk.rest.services.UserServiceImpl;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,25 +28,25 @@ public class UserRestController {
     }
 
     @GetMapping("/users")
-    public List<User> showAllUsers() {
-        return userServiceImpl.findAllUsers();
+    public ResponseEntity<List<User>> showAllUsers() {
+        return ResponseEntity.ok(userServiceImpl.findAllUsers());
     }
 
     @GetMapping("/users/{id}")
-    public User getOneUser(@PathVariable("id") Long id) {
-        return userServiceImpl.findById(id);
+    public ResponseEntity<User> getOneUser(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(userServiceImpl.findById(id));
     }
 
     @PostMapping("/users")
-    public User addNewUser(@RequestBody User user) {
+    public ResponseEntity<User> addNewUser(@RequestBody User user) {
         userServiceImpl.addUser(user);
-        return user;
+        return ResponseEntity.ok(user);
     }
 
     @PutMapping("/users")
-    public User updateUser(@RequestBody User user) {
+    public ResponseEntity<User> updateUser(@RequestBody User user) {
         userServiceImpl.updateUser(user);
-        return user;
+        return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("/users/{id}")
