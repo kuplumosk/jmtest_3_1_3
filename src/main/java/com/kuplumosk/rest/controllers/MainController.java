@@ -24,6 +24,11 @@ public class MainController {
         return "login";
     }
 
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
     @GetMapping("/user")
     public String showUserPage(Model model, Principal principal) {
         model.addAttribute("user", userServiceImpl.findByUsername(principal.getName()));
